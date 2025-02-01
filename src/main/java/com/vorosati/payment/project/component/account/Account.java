@@ -11,11 +11,14 @@ public class Account {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(nullable = false)
-    private String userId;
+    @Column
+    private String name;
 
     @Column(nullable = false)
     private Double balance;
+
+    @Version
+    private Long version;
 
     // One account can be sender in multiple transactions
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
@@ -28,8 +31,8 @@ public class Account {
     // Constructors
     public Account() {}
 
-    public Account(String userId, Double balance) {
-        this.userId = userId;
+    public Account(String name, Double balance) {
+        this.name = name;
         this.balance = balance;
     }
 
@@ -37,12 +40,12 @@ public class Account {
         return id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Double getBalance() {
