@@ -1,0 +1,20 @@
+spring:
+  application:
+      name: Payment Instant API
+  datasource:
+    driverClassName: org.postgresql.Driver
+    username: myuser
+    password: secret
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    hikari:
+      connection-timeout: 3000
+  sql:
+    init:
+      continue-on-error: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
