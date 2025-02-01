@@ -1,2 +1,2 @@
-# payment
+# Payment System homework
 Homework
