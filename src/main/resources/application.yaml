@@ -8,9 +8,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/mydatabase
     hikari:
       connection-timeout: 3000
-  sql:
-    init:
-      continue-on-error: true
   jpa:
     hibernate:
       ddl-auto: update
