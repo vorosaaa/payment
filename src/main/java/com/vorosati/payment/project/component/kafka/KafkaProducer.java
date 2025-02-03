@@ -2,6 +2,8 @@ package com.vorosati.payment.project.component.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vorosati.payment.project.common.PaymentResponseType;
+import com.vorosati.payment.project.common.exception.BusinessException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class KafkaProducer {
         } catch (JsonProcessingException e) {
             // Handle the exception (e.g., log it)
             e.printStackTrace();
+            throw new BusinessException(PaymentResponseType.KAFKA_ERROR);
         }
     }
 }

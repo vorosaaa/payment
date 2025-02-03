@@ -8,8 +8,11 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Component
 @Path("/account")
@@ -17,13 +20,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AccountEndpoint {
 
+    private final Logger logger = LoggerFactory.getLogger(AccountEndpoint.class.getName());
     private final AccountService accountService;
     public AccountEndpoint(AccountService accountService) {
         this.accountService = accountService;
     }
 
     @POST
-    @Path("/")
     public Response createAccount(
             @RequestBody AccountRequest accountRequest) {
         Account account = accountService.createAccount(accountRequest);
@@ -33,6 +36,7 @@ public class AccountEndpoint {
     @GET
     @Path("/{accountId}")
     public Response getAccount(@PathParam("accountId") Long accountId) {
+        logger.info("Getting account with id: {}", accountId);
         Account account = accountService.getAccountById(accountId);
         return Response.ok(new AccountResponse(account)).build();
     }

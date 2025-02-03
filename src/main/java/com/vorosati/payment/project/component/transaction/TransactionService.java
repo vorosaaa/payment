@@ -1,5 +1,7 @@
 package com.vorosati.payment.project.component.transaction;
 
+import com.vorosati.payment.project.common.PaymentResponseType;
+import com.vorosati.payment.project.common.exception.BusinessException;
 import com.vorosati.payment.project.component.account.Account;
 import com.vorosati.payment.project.component.account.AccountRepository;
 import com.vorosati.payment.project.component.kafka.KafkaProducer;
@@ -27,17 +29,17 @@ public class TransactionService {
     @Transactional
     public Transaction sendMoney(Long senderId, Long recipientId, Double amount) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be greater than 0");
+            throw new BusinessException(PaymentResponseType.INVALID_TRANSACTION);
         }
 
         Account sender = accountRepository.findByIdForUpdate(senderId)
-                .orElseThrow(() -> new IllegalArgumentException("Sender not found"));
+                .orElseThrow(() -> new BusinessException(PaymentResponseType.ACCOUNT_NOT_FOUND, senderId));
         Account recipient = accountRepository.findByIdForUpdate(recipientId)
-                .orElseThrow(() -> new IllegalArgumentException("Recipient not found"));
+                .orElseThrow(() -> new BusinessException(PaymentResponseType.ACCOUNT_NOT_FOUND, recipientId));
 
         // Ensure sender has enough balance
         if (sender.getBalance() < amount) {
-            throw new IllegalStateException("Insufficient funds");
+            throw new BusinessException(PaymentResponseType.INSUFFICIENT_BALANCE);
         }
 
         sender.setBalance(sender.getBalance() - amount);
@@ -57,7 +59,7 @@ public class TransactionService {
 
     public List<Transaction> getTransactions(Long accountId) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+                .orElseThrow(() -> new BusinessException(PaymentResponseType.ACCOUNT_NOT_FOUND, accountId));
         return transactionRepository.findBySenderOrRecipient(account, account);
     }
 }

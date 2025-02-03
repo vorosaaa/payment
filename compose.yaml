@@ -24,12 +24,3 @@ services:
     restart: always
     ports:
       - "2181:2181"
-
-  app:
-    build: .
-    restart: always
-    depends_on:
-      - postgres
-      - kafka
-    ports:
-      - "8080:8080"

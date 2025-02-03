@@ -26,7 +26,6 @@ public class TransactionEndpoint {
     }
 
     @POST
-    @Path("/")
     public Response sendMoney(@QueryParam("sender") Long senderId,
                               @QueryParam("recipient") Long recipientId,
                               @QueryParam("amount") Double amount) {

@@ -1,8 +1,8 @@
 package com.vorosati.payment.project.component.account;
 
+import com.vorosati.payment.project.common.PaymentResponseType;
+import com.vorosati.payment.project.common.exception.BusinessException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -21,7 +21,6 @@ public class AccountService {
     }
 
     public Account getAccountById(Long accountId) {
-
-        return accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found with id: " + accountId));
+        return accountRepository.findById(accountId).orElseThrow(() -> new BusinessException(PaymentResponseType.ACCOUNT_NOT_FOUND, accountId));
     }
 }
